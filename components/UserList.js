@@ -43,8 +43,8 @@ class UserList extends React.Component {
 getFullName = claim => `${claim.firstName} ${claim.lastName}`
 listExpand = panelIndex => (event, expanded) => {
   const parent = event.currentTarget.parentElement;
-  let start = this.state.bgColor.start;
-  const end = this.state.bgColor.end;
+  let {start} = this.state.bgColor;
+  const {end} = this.state.bgColor;
   let operator = 0;
 
   if (start - end < 0) {
@@ -69,9 +69,39 @@ listExpand = panelIndex => (event, expanded) => {
     parent.querySelector('p.userFullName').style.color = styless['userFullName-before'].color;
   }
 }
+render() {
+  return (
+    <div style={styless.root}>
+      {
+        this.props.users.map((user, i) => (
+          <ExpansionPanel onChange={this.listExpand(i)}>
+            <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+              <Typography className="userFullName" style={styless.Word_Coler}>{this.getFullName(user.claim)}</Typography>
+            </ExpansionPanelSummary>
+            <ExpansionPanelDetails>
+              <Typography>
+                <div style={styless.chatroom}>
+                  <Link href={`/user?id=${user.id}`} as={`/users/${user.id}`}>
+                    <IconButton tooltip="Profile">
+                      <Badge
+                        secondary
+                        badgeStyle={{ top: 12, right: 12 }}
+                      >
+                        <AccountBoxIcon />
+                      </Badge>
+                    </IconButton>
+                  </Link>
+                </div>
 
-
-
+              </Typography>
+            </ExpansionPanelDetails>
+          </ExpansionPanel>
+  ))
+  }
+    </div>
+  );
+}
+}
 
 
 UserList.propTypes = {
