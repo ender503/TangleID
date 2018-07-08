@@ -40,11 +40,13 @@ class UserList extends React.Component {
       },
     };
   }
-getFullName = claim => `${claim.firstName} ${claim.lastName}`
+  static getFullName(claim) {
+    return `${claim.firstName} ${claim.lastName}`;
+  }
 listExpand = panelIndex => (event, expanded) => {
   const parent = event.currentTarget.parentElement;
-  let {start} = this.state.bgColor;
-  const {end} = this.state.bgColor;
+  let { start } = this.state.bgColor;
+  const { end } = this.state.bgColor;
   let operator = 0;
 
   if (start - end < 0) {
@@ -70,13 +72,14 @@ listExpand = panelIndex => (event, expanded) => {
   }
 }
 render() {
+  const { users } = this.props;
   return (
     <div style={styless.root}>
       {
-        this.props.users.map((user, i) => (
+        users.map((user, i) => (
           <ExpansionPanel onChange={this.listExpand(i)}>
             <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-              <Typography className="userFullName" style={styless.Word_Coler}>{this.getFullName(user.claim)}</Typography>
+              <Typography className="userFullName" style={styless.Word_Coler}>{this.constructor.getFullName(user.claim)}</Typography>
             </ExpansionPanelSummary>
             <ExpansionPanelDetails>
               <Typography>
