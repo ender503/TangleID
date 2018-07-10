@@ -43,67 +43,69 @@ class UserList extends React.Component {
   static getFullName(claim) {
     return `${claim.firstName} ${claim.lastName}`;
   }
-listExpand = panelIndex => (event, expanded) => {
-  const parent = event.currentTarget.parentElement;
-  let { start } = this.state.bgColor;
-  const { end } = this.state.bgColor;
-  let operator = 0;
 
-  if (start - end < 0) {
-    operator = end - start;
-    start = end;
-  } else {
-    operator = start - end;
+  listExpand = panelIndex => (event, expanded) => {
+    const parent = event.currentTarget.parentElement;
+    let { start } = this.state.bgColor;
+    const { end } = this.state.bgColor;
+    let operator = 0;
+
+    if (start - end < 0) {
+      operator = end - start;
+      start = end;
+    } else {
+      operator = start - end;
+    }
+
+    operator += 1;
+    const colorIndex = Object.keys(BlueColor)[start - (panelIndex % operator)];
+
+    parent.style['background-color'] = BlueColor[colorIndex];
+
+    if (expanded) {
+      parent.style.border = styless['list-expand'].border;
+      parent.querySelector('p.userFullName').style.fontSize = styless['userFullName-after']['font-size'];
+      parent.querySelector('p.userFullName').style.color = styless['userFullName-after'].color;
+    } else {
+      parent.setAttribute('style', '');
+      parent.querySelector('p.userFullName').style.fontSize = styless['userFullName-before']['font-size'];
+      parent.querySelector('p.userFullName').style.color = styless['userFullName-before'].color;
+    }
   }
 
-  operator += 1;
-  const colorIndex = Object.keys(BlueColor)[start - (panelIndex % operator)];
+  render() {
+    const { users } = this.props;
+    return (
+      <div style={styless.root}>
+        {
+          users.map((user, i) => (
+            <ExpansionPanel onChange={this.listExpand(i)}>
+              <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+                <Typography className="userFullName" style={styless.Word_Coler}>{this.constructor.getFullName(user.claim)}</Typography>
+              </ExpansionPanelSummary>
+              <ExpansionPanelDetails>
+                <Typography>
+                  <div style={styless.chatroom}>
+                    <Link href={`/user?id=${user.id}`} as={`/users/${user.id}`}>
+                      <IconButton tooltip="Profile">
+                        <Badge
+                          secondary
+                          badgeStyle={{ top: 12, right: 12 }}
+                        >
+                          <AccountBoxIcon />
+                        </Badge>
+                      </IconButton>
+                    </Link>
+                  </div>
 
-  parent.style['background-color'] = BlueColor[colorIndex];
-
-  if (expanded) {
-    parent.style.border = styless['list-expand'].border;
-    parent.querySelector('p.userFullName').style.fontSize = styless['userFullName-after']['font-size'];
-    parent.querySelector('p.userFullName').style.color = styless['userFullName-after'].color;
-  } else {
-    parent.setAttribute('style', '');
-    parent.querySelector('p.userFullName').style.fontSize = styless['userFullName-before']['font-size'];
-    parent.querySelector('p.userFullName').style.color = styless['userFullName-before'].color;
+                </Typography>
+              </ExpansionPanelDetails>
+            </ExpansionPanel>
+    ))
+    }
+      </div>
+    );
   }
-}
-render() {
-  const { users } = this.props;
-  return (
-    <div style={styless.root}>
-      {
-        users.map((user, i) => (
-          <ExpansionPanel onChange={this.listExpand(i)}>
-            <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-              <Typography className="userFullName" style={styless.Word_Coler}>{this.constructor.getFullName(user.claim)}</Typography>
-            </ExpansionPanelSummary>
-            <ExpansionPanelDetails>
-              <Typography>
-                <div style={styless.chatroom}>
-                  <Link href={`/user?id=${user.id}`} as={`/users/${user.id}`}>
-                    <IconButton tooltip="Profile">
-                      <Badge
-                        secondary
-                        badgeStyle={{ top: 12, right: 12 }}
-                      >
-                        <AccountBoxIcon />
-                      </Badge>
-                    </IconButton>
-                  </Link>
-                </div>
-
-              </Typography>
-            </ExpansionPanelDetails>
-          </ExpansionPanel>
-  ))
-  }
-    </div>
-  );
-}
 }
 
 
