@@ -45,22 +45,11 @@ class UserList extends React.Component {
     return `${claim.firstName} ${claim.lastName}`;
   }
 
-
   listExpand = panelIndex => (event, expanded) => {
     const parent = event.currentTarget.parentElement;
-    let { start } = bgColor;
-    const { end } = bgColor;
-    let operator = 0;
 
-    if (start - end < 0) {
-      operator = end - start;
-      start = end;
-    } else {
-      operator = start - end;
-    }
-
-    operator += 1;
-    const colorIndex = Object.keys(BlueColor)[start - (panelIndex % operator)];
+    let colorLevel = (bgColor.start - bgColor.end) + 1;
+    const colorIndex = Object.keys(BlueColor)[bgColor.start - (panelIndex % colorLevel)];
 
     parent.style['background-color'] = BlueColor[colorIndex];
 
