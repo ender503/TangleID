@@ -36,6 +36,7 @@ const bgColor = {
 class UserList extends React.Component {
   constructor(props) {
     super(props);
+    this.listExpand = this.listExpand.bind(this);
   }
 
   static getFullName(claim) {
