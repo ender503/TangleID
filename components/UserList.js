@@ -15,19 +15,16 @@ const styless = {
   root: {
     flexGrow: 1,
   },
-  'list-expand': {
+  UserItem: {
     border: '1px solid #0288D1',
   },
-  Word_Coler: {
+  UserName_Normal: {
+    fontSize: '0.875rem',
     color: '#2196F3',
   },
-  'userFullName-before': {
-    'font-size': '0.875rem',
-    color: '#2196F3',
-  },
-  'userFullName-after': {
-    'font-size': '1.2em',
+  UserName_Expanded: {
     color: '#212121',
+    fontSize: '1.2em',
   },
 };
 
@@ -54,13 +51,11 @@ class UserList extends React.Component {
     parent.style['background-color'] = BlueColor[colorIndex];
 
     if (expanded) {
-      parent.style.border = styless['list-expand'].border;
-      parent.querySelector('p.userFullName').style.fontSize = styless['userFullName-after']['font-size'];
-      parent.querySelector('p.userFullName').style.color = styless['userFullName-after'].color;
+      parent.style.border = styless['UserItem'].border;
+      parent.querySelector('p.UserName').style = styless['UserName_Expanded'];
     } else {
       parent.setAttribute('style', '');
-      parent.querySelector('p.userFullName').style.fontSize = styless['userFullName-before']['font-size'];
-      parent.querySelector('p.userFullName').style.color = styless['userFullName-before'].color;
+      parent.querySelector('p.UserName').style = styless['UserName_Normal'];
     }
   }
 
@@ -72,7 +67,9 @@ class UserList extends React.Component {
           users.map((user, i) => (
             <ExpansionPanel onChange={this.listExpand(i)}>
               <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                <Typography className="userFullName" style={styless.Word_Coler}>{this.constructor.getFullName(user.claim)}</Typography>
+                <Typography className="UserName" style={styless.UserName_Normal}>
+                  {this.constructor.getFullName(user.claim)}
+                </Typography>
               </ExpansionPanelSummary>
               <ExpansionPanelDetails>
                 <Typography>
